@@ -13,6 +13,8 @@ from keras.layers.convolutional import Convolution2D
 samples = []
 with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
+    c = 0
+    next(reader)
     for line in reader:
         samples.append(line)
 
@@ -29,15 +31,16 @@ def generator(samples, batch_size=32):
 
             images = []
             angles = []
-            for batch_sample in batch_samples[1:]:
-                # for i in range(3):
-                name = './data/IMG/'+batch_sample[0].split('/')[-1]
-                image = cv2.imread(name)
-                angle = float(batch_sample[3])
-                images.append(image)
-                angles.append(angle)
-                # images.append(cv2.flip(image, 1))
-                # angles.append(angle*-1.0)
+            for batch_sample in batch_samples:
+                for i in range(3):
+
+                    name = './data/IMG/'+batch_sample[i].split('/')[-1]
+                    image = cv2.imread(name)
+                    angle = float(batch_sample[3])
+                    images.append(image)
+                    angles.append(angle)
+                    images.append(cv2.flip(image, 1))
+                    angles.append(angle*-1.0)
 
             # trim image to only see section with road
             X_train = np.array(images)
