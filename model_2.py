@@ -41,7 +41,6 @@ def generator(samples, batch_size=32):
 
             # trim image to only see section with road
             X_train = np.array(images)
-            print(len(X_train))
             y_train = np.array(angles)
             yield sklearn.utils.shuffle(X_train, y_train)
 
