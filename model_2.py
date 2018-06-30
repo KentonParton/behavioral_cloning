@@ -25,7 +25,7 @@ train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 def generator(samples, batch_size=32):
     num_samples = len(samples)
     while 1:  # Loop forever so the generator never terminates
-        sklearn.utils.shuffle(samples)
+        # sklearn.utils.shuffle(samples)
         for offset in range(0, num_samples, batch_size):
             batch_samples = samples[offset:offset+batch_size]
 
@@ -60,7 +60,7 @@ model = Sequential()
 #                  input_shape=(ch, row, col),
 #                  output_shape=(ch, row, col)))
 
-model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160, 320, 3)))
 
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
@@ -80,9 +80,9 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 model.fit_generator(train_generator,
-                    samples_per_epoch=len(train_samples)*3,
+                    samples_per_epoch=len(train_samples)*6,
                     validation_data=validation_generator,
-                    nb_val_samples=len(validation_samples)*3,
+                    nb_val_samples=len(validation_samples)*6,
                     nb_epoch=7,
                     verbose=1)
 
