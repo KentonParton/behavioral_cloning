@@ -38,7 +38,7 @@ with open('./data/driving_log.csv') as csvfile:
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
 
-def generator(samples, batch_size=32):
+def generator(samples, batch_size=16):
     num_samples = len(samples)
     while 1:  # Loop forever so the generator never terminates
         # sklearn.utils.shuffle(samples)
@@ -64,19 +64,12 @@ def generator(samples, batch_size=32):
 
 
 # compile and train the model using the generator function
-train_generator = generator(train_samples, batch_size=128)
-validation_generator = generator(validation_samples, batch_size=128)
-
-# ch, row, col = 3, 160, 320  # Trimmed image format
+train_generator = generator(train_samples, batch_size=16)
+validation_generator = generator(validation_samples, batch_size=16)
 
 model = Sequential()
-# Pre-process incoming data, centered around zero with small standard deviation
-# model.add(Lambda(lambda x: x/127.5 - 1.,
-#                  input_shape=(ch, row, col),
-#                  output_shape=(ch, row, col)))
 
 model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
-
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
