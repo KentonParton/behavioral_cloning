@@ -20,7 +20,7 @@ with open('./data/driving_log.csv') as csvfile:
         steering_center = float(row[3])
 
         # create adjusted steering measurements for the side camera images
-        correction = 0.2  # this is a parameter to tune
+        correction = 0.5  # this is a parameter to tune
         steering_left = steering_center + correction
         steering_right = steering_center - correction
 
@@ -64,8 +64,8 @@ def generator(samples, batch_size=32):
 
 
 # compile and train the model using the generator function
-train_generator = generator(train_samples, batch_size=32)
-validation_generator = generator(validation_samples, batch_size=32)
+train_generator = generator(train_samples, batch_size=128)
+validation_generator = generator(validation_samples, batch_size=128)
 
 # ch, row, col = 3, 160, 320  # Trimmed image format
 
