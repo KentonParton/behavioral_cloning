@@ -13,10 +13,26 @@ from keras.layers.convolutional import Convolution2D
 samples = []
 with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
-    c = 0
     next(reader)
-    for line in reader:
-        samples.append(line)
+
+    for row in reader:
+
+        steering_center = float(row[3])
+
+        # create adjusted steering measurements for the side camera images
+        correction = 0.2  # this is a parameter to tune
+        steering_left = steering_center + correction
+        steering_right = steering_center - correction
+
+        # img paths to 3 different camera angles
+        img_center = './data/IMG/'+row[0].split('/')[-1]
+        img_left = './data/IMG/'+row[1].split('/')[-1]
+        img_right = './data/IMG/'+row[2].split('/')[-1]
+
+        # append the 3 images and steering angles to image samples
+        samples.append([img_center, steering_center])
+        samples.append([img_left, steering_left])
+        samples.append([img_right, steering_right])
 
 
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
@@ -32,11 +48,10 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                # for i in range(3):
 
-                name = './data/IMG/'+batch_sample[0].split('/')[-1]
+                name = batch_sample[0]
                 image = cv2.imread(name)
-                angle = float(batch_sample[3])
+                angle = float(batch_sample[1])
                 images.append(image)
                 angles.append(angle)
                 images.append(cv2.flip(image, 1))
@@ -80,9 +95,9 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 model.fit_generator(train_generator,
-                    samples_per_epoch=len(train_samples)*2,
+                    samples_per_epoch=len(train_samples)*6,
                     validation_data=validation_generator,
-                    nb_val_samples=len(validation_samples)*2,
+                    nb_val_samples=len(validation_samples)*6,
                     nb_epoch=7,
                     verbose=1)
 
