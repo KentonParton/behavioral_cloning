@@ -75,7 +75,7 @@ model = Sequential()
 #                  input_shape=(ch, row, col),
 #                  output_shape=(ch, row, col)))
 
-model.add(Lambda(lambda x: x / 255.0 - 0.5, input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
 
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 
