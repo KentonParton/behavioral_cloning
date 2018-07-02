@@ -20,7 +20,7 @@ with open('./data/driving_log.csv') as csvfile:
         steering_center = float(row[3])
 
         # create adjusted steering measurements for the side camera images
-        correction = 0.3  # this is a parameter to tune
+        correction = 0.2  # this is a parameter to tune
         steering_left = steering_center + correction
         steering_right = steering_center - correction
 
@@ -38,7 +38,7 @@ with open('./data/driving_log.csv') as csvfile:
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
 
-def generator(samples, batch_size=16):
+def generator(samples, batch_size=32):
     num_samples = len(samples)
     while 1:  # Loop forever so the generator never terminates
         # sklearn.utils.shuffle(samples)
@@ -64,8 +64,8 @@ def generator(samples, batch_size=16):
 
 
 # compile and train the model using the generator function
-train_generator = generator(train_samples, batch_size=16)
-validation_generator = generator(validation_samples, batch_size=16)
+train_generator = generator(train_samples, batch_size=32)
+validation_generator = generator(validation_samples, batch_size=32)
 
 model = Sequential()
 
@@ -91,7 +91,7 @@ model.fit_generator(train_generator,
                     samples_per_epoch=len(train_samples)*2,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples)*2,
-                    nb_epoch=5,
+                    nb_epoch=3,
                     verbose=1)
 
 model.save('model.h5')
