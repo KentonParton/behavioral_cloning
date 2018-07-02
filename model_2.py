@@ -22,7 +22,7 @@ with open('../data/driving_log.csv') as csvfile:
         steering_center = float(row[3])
 
         # create adjusted steering measurements for the side camera images
-        correction = 0.2  # this is a parameter to tune
+        correction = 0.4  # this is a parameter to tune
         steering_left = steering_center + correction
         steering_right = steering_center - correction
 
