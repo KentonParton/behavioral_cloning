@@ -38,10 +38,6 @@ with open('../data/driving_log.csv') as csvfile:
 
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
-model = Sequential()
-model.add(Lambda(lambda x: x / 127.5, input_shape=(160, 320, 3)))
-model.add(Cropping2D(cropping=((70, 25), (0, 0))))
-
 
 def generator(samples, batch_size=32):
     """
