@@ -12,12 +12,15 @@ The goals / steps of this project are the following:
 
 ### Sample images
 **Normal Image**
+
 <img src="examples/img_0.jpg" width="420" alt="Combined Image" />
 
 **Recovery Image | Left Camera Position**
+
 <img src="examples/img_2.jpg" width="420" alt="Combined Image" />
 
 **Recovery Image | Right Camera Position**
+
 <img src="examples/img_4.jpg" width="420" alt="Combined Image" />
 
 
@@ -134,14 +137,17 @@ Followed by 4 densely connected layers with depths of 100, 50, 10, and 1.
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
 **Center Camera View**
+
 <img src="examples/img_1.jpg" width="420" alt="Combined Image" />
 
 In order to teach the model how to recover back to the center of the road, left and right camera views were used as seen below:
 
 **Left Camera View**
+
 <img src="examples/img_3.jpg" width="420" alt="Combined Image" />
 
 **Right Camera View**
+
 <img src="examples/img_5.jpg" width="420" alt="Combined Image" />
 
 
