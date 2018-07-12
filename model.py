@@ -117,19 +117,22 @@ model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 # Convolutional Layers
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
+model.add(Dropout(0.5))
 model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
+model.add(Dropout(0.5))
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
+model.add(Dropout(0.5))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
+model.add(Dropout(0.5))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 
 # Flatten points
 model.add(Flatten())
 
 # 5 Densely connected layers
+model.add(Dense(1164))
 model.add(Dense(100))
-model.add(Dropout(0.50))
 model.add(Dense(50))
-model.add(Dropout(0.50))
 model.add(Dense(10))
 model.add(Dense(1))
 
