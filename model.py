@@ -112,7 +112,7 @@ validation_generator = generator(validation_samples, batch_size=32)
 # Connvolutional Neural Network using Keras
 model = Sequential()
 # Normalize data
-model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: x / 255. - .5, input_shape=(160, 320, 3)))
 # Crop top 70 pixels and bottom 20 pixels of image
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 # Convolutional Layers
@@ -121,7 +121,6 @@ model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
-model.add(Dropout(0.5))
 # Flatten points
 model.add(Flatten())
 
