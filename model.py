@@ -119,9 +119,7 @@ model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
 model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Dropout(0.50))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
-model.add(Dropout(0.50))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 
 # Flatten points
@@ -142,7 +140,7 @@ model.fit_generator(train_generator,
                     samples_per_epoch=len(train_samples)*2,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples)*2,
-                    nb_epoch=4,
+                    nb_epoch=3,
                     verbose=1)
 
 # save the created trained model
