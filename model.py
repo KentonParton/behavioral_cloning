@@ -12,6 +12,27 @@ from keras.regularizers import l2
 
 samples = []
 
+
+def flip_img(img):
+    """
+    Flips an img.
+    Uses: Augments training data and prevents overfitting on a track which has more left/right
+    turns.
+    :param img:
+    :return: Flipped image data
+    """
+    return cv2.flip(img, 1)
+
+
+def invert_angle(angle):
+    """
+    Inverts the steering angle for the flip_img()
+    :param angle:
+    :return: inverted angle
+    """
+    return angle * -1.0
+
+
 # open csv file with image dirs and steering angles
 with open('../data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
@@ -39,7 +60,6 @@ with open('../data/driving_log.csv') as csvfile:
         samples.append([img_center, steering_center])
         samples.append([img_left, steering_left])
         samples.append([img_right, steering_right])
-
 
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
 
@@ -75,10 +95,9 @@ def generator(samples, batch_size=32):
                 images.append(image)
                 angles.append(angle)
 
-                # append flipped image (augmented data)
-                images.append(cv2.flip(image, 1))
-                # append inverted steering angle (augmented data)
-                angles.append(angle*-1.0)
+                # append augmented data, flipped image and inverted steering angle
+                images.append(flip_img(image))
+                angles.append(invert_angle(angle))
 
             # create numpy arrays of batch data
             X_train = np.array(images)
@@ -95,24 +114,23 @@ model = Sequential()
 # Normalize data
 model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
 # Crop top 70 pixels and bottom 20 pixels of image
-# model.add(Cropping2D(cropping=((70, 25), (0, 0))))
+model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 # Convolutional Layers
-model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu'))
-model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu'))
+model.add(Convolution2D(24, 5, 5, subsample=(2, 2), activation='relu', W_regularizer=l2(0.001)))
+model.add(Convolution2D(36, 5, 5, subsample=(2, 2), activation='relu', W_regularizer=l2(0.001)))
+model.add(Convolution2D(48, 5, 5, subsample=(2, 2), activation='relu', W_regularizer=l2(0.001)))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 
-model.add(Dropout(0.25))
 # Flatten points
 model.add(Flatten())
 
 # 5 Densely connected layers
-model.add(Dense(100, W_regularizer=l2(0.01)))
+model.add(Dense(100, W_regularizer=l2(0.001)))
 model.add(Dropout(0.25))
-model.add(Dense(50, W_regularizer=l2(0.01)))
+model.add(Dense(50, W_regularizer=l2(0.001)))
 model.add(Dropout(0.25))
-model.add(Dense(10, W_regularizer=l2(0.01)))
+model.add(Dense(10, W_regularizer=l2(0.001)))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
@@ -122,7 +140,7 @@ model.fit_generator(train_generator,
                     samples_per_epoch=len(train_samples)*2,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples)*2,
-                    nb_epoch=6,
+                    nb_epoch=3,
                     verbose=1)
 
 # save the created trained model
