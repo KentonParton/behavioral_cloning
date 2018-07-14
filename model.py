@@ -10,8 +10,6 @@ from keras.layers import Dense, Lambda, Cropping2D, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.regularizers import l2
 
-samples = []
-
 
 def flip_img(img):
     """
@@ -32,6 +30,8 @@ def invert_angle(angle):
     """
     return angle * -1.0
 
+
+samples = []
 
 # open csv file with image dirs and steering angles
 with open('./data/driving_log.csv') as csvfile:
@@ -83,6 +83,7 @@ def generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
+
                 # dir path to image
                 path = batch_sample[0]
 
@@ -112,7 +113,7 @@ validation_generator = generator(validation_samples, batch_size=32)
 # Connvolutional Neural Network using Keras
 model = Sequential()
 # Normalize data
-model.add(Lambda(lambda x: x / 255. - .5, input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: x / 127.5 - 1., input_shape=(160, 320, 3)))
 # Crop top 70 pixels and bottom 20 pixels of image
 model.add(Cropping2D(cropping=((70, 25), (0, 0))))
 # Convolutional Layers
@@ -125,7 +126,6 @@ model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Flatten())
 
 # 5 Densely connected layers
-model.add(Dense(1164))
 model.add(Dense(100))
 model.add(Dense(50))
 model.add(Dense(10))
