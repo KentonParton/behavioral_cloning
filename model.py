@@ -34,7 +34,7 @@ def invert_angle(angle):
 
 
 # open csv file with image dirs and steering angles
-with open('../data/driving_log.csv') as csvfile:
+with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     # ignore csv header
     next(reader)
@@ -52,9 +52,9 @@ with open('../data/driving_log.csv') as csvfile:
         steering_right = steering_center - correction
 
         # img paths to 3 different camera angles
-        img_center = '../data/IMG/'+row[0].split('/')[-1]
-        img_left = '../data/IMG/'+row[1].split('/')[-1]
-        img_right = '../data/IMG/'+row[2].split('/')[-1]
+        img_center = './data/IMG/'+row[0].split('/')[-1]
+        img_left = './data/IMG/'+row[1].split('/')[-1]
+        img_right = './data/IMG/'+row[2].split('/')[-1]
 
         # append the 3 images and steering angles to image samples
         samples.append([img_center, steering_center])
