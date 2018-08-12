@@ -132,7 +132,7 @@ Flatten
 
 Followed by 4 densely connected layers with depths of 100, 50, 10, and 1.
 
-#### 3. Creation of the Training Set & Training Process
+#### 3. Creation of the Training/Validation/Test Set & the Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
@@ -153,4 +153,4 @@ In order to teach the model how to recover back to the center of the road, left 
 
 After the collection process, I had ~ 40,000 sample images. The images were normalized using "x / 127.5 - 1." Lastly, 20% of the sample images were used as a validation set.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as the model began to overfit at a higher epoch. I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as the model began to overfit at a higher epoch. I used an adam optimizer so that manually training the learning rate wasn't necessary. Next, I tested the models performance at driving in the simulator.
