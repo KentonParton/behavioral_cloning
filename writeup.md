@@ -148,7 +148,7 @@ In order to teach the model how to recover back to the center of the road, left 
 
 **Right Camera View**
 
-<img src="examples/img_5.jpg" width="420" alt="Combined Image" />
+<img src="examples/img_4.jpg" width="420" alt="Combined Image" />
 
 
 After the collection process, I had ~ 40,000 sample images. The images were normalized using "x / 127.5 - 1." Lastly, 20% of the sample images were used as a validation set.
