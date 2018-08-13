@@ -59,7 +59,7 @@ Furthermore, the top 70 and bottom 25 pixels of each image is cropped using the 
 
 #### 2. Attempts to reduce overfitting in the model
 
-To prevent overfitting, data was augmented by flipping images using OpenCV's cv2.flip() and inverting the the steering angle. This doubled the amount of training data.
+To prevent overfitting, data was augmented by flipping images using OpenCV's cv2.flip() and inverting the the steering angle. This doubled the amount of training data. Furthermore, an l2 regularizer was used which minimizes the parameters.
 
 #### 3. Model parameter tuning
 
@@ -130,7 +130,24 @@ Convolutional Layer
 **Layer 8**
 Flatten
 
-Followed by 4 densely connected layers with depths of 100, 50, 10, and 1.
+**Layer 9**
+Dense layer:
+- Depth: 100
+- Regularizer: L2(0.1)
+
+**Layer 10**
+Dense layer:
+- Depth: 50
+- Regularizer: L2(0.1)
+
+**Layer 11**
+Dense layer:
+- Depth: 10
+
+**Layer 12**
+Dense layer
+- Depth: 1
+
 
 #### 3. Creation of the Training/Validation/Test Set & the Training Process
 
