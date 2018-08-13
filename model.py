@@ -125,8 +125,8 @@ model.add(Convolution2D(64, 3, 3, activation='relu'))
 # Flatten points
 model.add(Flatten())
 # 5 Densely connected layers
-model.add(Dense(100), kernel_regularizer=regularizers.l2(0.01))
-model.add(Dense(50), kernel_regularizer=regularizers.l2(0.01))
+model.add(Dense(100, kernel_regularizer=regularizers.l2(0.01)))
+model.add(Dense(50, kernel_regularizer=regularizers.l2(0.01)))
 model.add(Dense(10))
 model.add(Dense(1))
 
