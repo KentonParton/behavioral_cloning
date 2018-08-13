@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers import Dense, Lambda, Cropping2D, Flatten, Dropout
 from keras.layers.convolutional import Convolution2D
-from keras.regularizers import l2
+from keras import regularizers
 
 
 def flip_img(img):
@@ -124,11 +124,9 @@ model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 # Flatten points
 model.add(Flatten())
-model.add(Dropout(0.2))
 # 5 Densely connected layers
-model.add(Dense(100))
-model.add(Dropout(0.5))
-model.add(Dense(50))
+model.add(Dense(100), kernel_regularizer=regularizers.l2(0.01))
+model.add(Dense(50), kernel_regularizer=regularizers.l2(0.01))
 model.add(Dense(10))
 model.add(Dense(1))
 
@@ -139,7 +137,7 @@ model.fit_generator(train_generator,
                     samples_per_epoch=len(train_samples)*2,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples)*2,
-                    nb_epoch=8,
+                    nb_epoch=3,
                     verbose=1)
 
 # save the created trained model
