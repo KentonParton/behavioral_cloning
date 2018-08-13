@@ -34,7 +34,7 @@ def invert_angle(angle):
 samples = []
 
 # open csv file with image dirs and steering angles
-with open('./data/driving_log.csv') as csvfile:
+with open('../data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     # ignore csv header
     next(reader)
@@ -52,9 +52,9 @@ with open('./data/driving_log.csv') as csvfile:
         steering_right = steering_center - correction
 
         # img paths to 3 different camera angles
-        img_center = './data/IMG/'+row[0].split('/')[-1]
-        img_left = './data/IMG/'+row[1].split('/')[-1]
-        img_right = './data/IMG/'+row[2].split('/')[-1]
+        img_center = '../data/IMG/'+row[0].split('/')[-1]
+        img_left = '../data/IMG/'+row[1].split('/')[-1]
+        img_right = '../data/IMG/'+row[2].split('/')[-1]
 
         # append the 3 images and steering angles to image samples
         samples.append([img_center, steering_center])
@@ -124,9 +124,10 @@ model.add(Convolution2D(64, 3, 3, activation='relu'))
 model.add(Convolution2D(64, 3, 3, activation='relu'))
 # Flatten points
 model.add(Flatten())
-
+model.add(Dropout(0.2))
 # 5 Densely connected layers
 model.add(Dense(100))
+model.add(Dropout(0.5))
 model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
@@ -138,7 +139,7 @@ model.fit_generator(train_generator,
                     samples_per_epoch=len(train_samples)*2,
                     validation_data=validation_generator,
                     nb_val_samples=len(validation_samples)*2,
-                    nb_epoch=3,
+                    nb_epoch=8,
                     verbose=1)
 
 # save the created trained model
